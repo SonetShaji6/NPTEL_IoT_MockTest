@@ -60,7 +60,13 @@ export default function App() {
     setStatus('answering');
   };
 
-  const normalize = (str) => str.split(' [cite:')[0].trim().toLowerCase();
+  const normalize = (str) => {
+    if (!str) return '';
+    // Strip [cite:...] markers
+    const withoutCite = str.split(' [cite:')[0].trim().toLowerCase();
+    // Strip leading prefixes like 'a.', 'b)', '(c)'
+    return withoutCite.replace(/^(\(?[a-z0-9][\.\)]\s*)/i, '').trim();
+  };
 
   const handleOptionSelect = (option, idx) => {
     if (status !== 'answering') return;
